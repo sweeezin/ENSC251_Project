@@ -44,7 +44,8 @@ void Deck::shuffle() {
 
 Card Deck::drawCard() {
     if (isEmpty()) {
-        throw std::runtime_error("Cannot draw a card because the deck is empty.");
+        createDeck();
+        shuffle();
     }
 
     // The last card in the vector is treated as the top card.

@@ -11,7 +11,7 @@ public:
     //constructors
     Game(); //default
 
-    void setUp(); //set up a new game
+    void setUp(const std::string& playerName); //set up a new game
     void dealHands(); //deals each player their 7 card hand
     void gameState(); //display game information (your cards and how many cards bots have)
 

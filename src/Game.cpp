@@ -8,9 +8,11 @@ Game::Game() { //default
     discardTop = 0; //make pile empty
 }
 
-void Game::setUp() { //build everything
+void Game::setUp(const std::string& playerName) { //build everything
+    const std::string humanName = playerName.empty() ? "Player 1" : playerName;
+
     //create Players
-    players[0]= Player("Player 1", false); //human
+    players[0]= Player(humanName, false); //human
     players[1]= Player("Bot 1", true);
     players[2]= Player("Bot 2", true); 
     players[3]= Player("Bot 3", true);
