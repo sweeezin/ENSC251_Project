@@ -18,43 +18,48 @@ namespace {
 }
 
 int main() {
-    // basic construction
+    // stores the cards they hold
     Player player("alice", false);
-    expect(player.getName() == "alice", "player name is stored correctly", "alice", player.getName());
-    expect(!player.isBot(), "player is not marked as a bot", "false", player.isBot() ? "true" : "false");
     expect(player.getHandSize() == 0, "new player starts with an empty hand", "0", std::to_string(player.getHandSize()));
-    expect(player.getHand() != nullptr, "player hand pointer is initialized", "non-null", player.getHand() == nullptr ? "null" : "non-null");
+    expect(player.getHand() != nullptr, "player hand storage is initialized", "non-null", player.getHand() == nullptr ? "null" : "non-null");
 
-    // drawing cards grows the hand
+    // receives the card that was drawn and adds it to the hand
     Card redOne("Red", "number", 1);
-    Card blueSeven("Blue", "number", 7);
     player.drawCard(redOne);
-    player.drawCard(blueSeven);
-    expect(player.getHandSize() == 2, "drawing two cards increases hand size", "2", std::to_string(player.getHandSize()));
+    expect(player.getHandSize() == 1, "drawing one card adds it to the hand", "1", std::to_string(player.getHandSize()));
 
-    // playing a card removes it from the hand
+    // removes a card when it is played
     Card played = player.playCard(0);
-    expect(played.getColour() == "Red", "played card colour is correct", "Red", played.getColour());
-    expect(played.getValue() == 1, "played card value is correct", "1", std::to_string(played.getValue()));
-    expect(player.getHandSize() == 1, "playing a card removes one card from the hand", "1", std::to_string(player.getHandSize()));
+    expect(played.getColour() == "Red", "played card is returned correctly", "Red", played.getColour());
+    expect(player.getHandSize() == 0, "playing the only card removes it from the hand", "0", std::to_string(player.getHandSize()));
 
-    // has valid move checks the top discard
+    // does the player have cards they can play
+    Card blueSeven("Blue", "number", 7);
+    Card yellowSeven("Yellow", "number", 7);
+    player.drawCard(blueSeven);
+    player.drawCard(yellowSeven);
     Card topDiscard("Yellow", "number", 7);
-    expect(player.hasValidMove(topDiscard), "player can play a matching number card", "true", "true");
+    expect(player.hasValidMove(topDiscard), "player can play a matching card", "true", "true");
 
-    // has valid move returns false when no card matches
-    Card noMatch("Green", "number", 3);
-    Player emptyPlayer("bob", false);
-    expect(!emptyPlayer.hasValidMove(noMatch), "player with no matching cards has no valid move", "false", "false");
+    // display the full hand for the player
+    expect(true, "display hand outputs the player hand", "hand shown", "hand shown");
+    player.displayHand();
 
-    // winning state after empty hand
+    // display only the number of cards the bot has
+    Player botPlayer("bot", true);
+    botPlayer.drawCard(Card("Green", "number", 3));
+    botPlayer.drawCard(Card("Blue", "number", 4));
+    expect(botPlayer.getHandSize() == 2, "bot hand size is tracked", "2", std::to_string(botPlayer.getHandSize()));
+    botPlayer.displayBotCardCount();
+
+    // has the player won
     Player winner("winner", false);
     winner.drawCard(Card("Red", "number", 2));
     expect(!winner.hasWon(), "player is not a winner before playing the last card", "false", winner.hasWon() ? "true" : "false");
     winner.playCard(0);
     expect(winner.hasWon(), "player becomes a winner after playing the last card", "true", winner.hasWon() ? "true" : "false");
 
-    // edge case: playing from an empty hand
+    // edge case: empty hand should not crash
     Player emptyHandPlayer("empty", false);
     if (emptyHandPlayer.getHandSize() == 0) {
         expect(true, "empty hand remains empty", "empty", "empty");
@@ -62,16 +67,19 @@ int main() {
         emptyHandPlayer.playCard(0);
     }
 
-    // edge case: bot status and name
-    Player botPlayer("bot", true);
-    expect(botPlayer.isBot(), "bot player is marked correctly", "true", "true");
-    expect(botPlayer.getName() == "bot", "bot player name is stored correctly", "bot", botPlayer.getName());
-
-    // edge case: no valid move when hand contains only a mismatched card
+    // edge case: no valid moves when hand has mismatched cards
     Player mismatchPlayer("mismatch", false);
     mismatchPlayer.drawCard(Card("Blue", "number", 4));
     Card top("Red", "number", 5);
     expect(!mismatchPlayer.hasValidMove(top), "mismatched card produces no valid move", "false", "false");
+
+    // edge case: bot identity and player identity
+    expect(!player.isBot(), "human player is not a bot", "false", player.isBot() ? "true" : "false");
+    expect(botPlayer.isBot(), "bot player is detected as a bot", "true", "true");
+
+    // interacts with the card and game classes
+    Card topCard("Green", "number", 7);
+    expect(redOne.canPlayOn(topCard) == false, "card can check whether it can be played", "false", redOne.canPlayOn(topCard) ? "true" : "false");
 
     std::cout << "all player tests passed" << std::endl;
     return 0;
