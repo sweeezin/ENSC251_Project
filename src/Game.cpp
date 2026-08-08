@@ -59,9 +59,10 @@ void Game::currentTurn() {
         }
 
         player.displayHand(); //show what they have
+        cout << endl;
         //choose card to play
         int chosenCard; //create variable
-        cout << "choose a card: " << endl; //ask player to choose what card they want to play 
+        cout << "Choose a card by number: " << endl; //ask player to choose what card they want to play 
         cin >> chosenCard;
         Card playedCard = player.playCard(chosenCard); //play that card
 
