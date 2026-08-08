@@ -17,12 +17,12 @@ void Deck::createDeck() {
 
     for (const std::string& colour : colours) {
         // Each colour has one zero card.
-        cards.push_back(Card(colour, "Number", 0));
+        cards.push_back(Card(colour, "number", 0));
 
         // Each colour has two copies of number cards 1 to 9.
         for (int value = 1; value <= 9; value++) {
-            cards.push_back(Card(colour, "Number", value));
-            cards.push_back(Card(colour, "Number", value));
+            cards.push_back(Card(colour, "number", value));
+            cards.push_back(Card(colour, "number", value));
         }
 
         // Each colour has two copies of every action card.

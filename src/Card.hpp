@@ -12,7 +12,8 @@ private:
     int value;      // for number on the card (0-9). remains unused for action cards
 
 public:
-    // constructor
+    // constructors
+    Card();
     Card(const string& colour, const string& type, int value);
 
     ~Card() = default;

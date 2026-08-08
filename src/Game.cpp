@@ -86,7 +86,7 @@ void Game::currentTurn() {
     } else { //Bot playing
         bool played = false;
         while (!played) { //bot keeps looking for a valid card and draws if it doesnt find one
-            for(int i = 0; i < player.getHandSize(); i++) { //look for valid card
+            for (size_t i = 0; i < player.getHandSize(); i++) { //look for valid card
                 Card card = player.getHand()[i]; //access cards using [i]
 
                 if(card.canPlayOn(discardPile[discardTop -1])) { //is the card playbale
@@ -176,19 +176,20 @@ void Game::actionCardEffect(Card playedCard) {
 }
 
 void Game::gameState() {
-    cout << "Current Game Information:\n "<< "Current card on top: ";
-    discardPile[discardTop -1].printCard();
-
+    cout << "Current Game Information:" << endl;
+    cout << "Current card on top: ";
+    discardPile[discardTop - 1].printCard();
+    cout << endl;
 
     //bots cards
-    for(int i = 1; i < 4; i++) {
+    for (int i = 1; i < 4; i++) {
         players[i].displayBotCardCount();
     }
     cout << endl;
+
     //human cards
     players[0].displayHand();
     cout << endl;
-
 }
 
 void Game::playGame() { //run the game

@@ -4,15 +4,24 @@
 #include <iostream>
 using namespace std;
 
-//the constructor, which creates a card object using the colour,type and value given. Initializer list assigns each private member variable it's parameter
-Card::Card(const string& cardColour, const string& cardType, int cardValue)
-    : type(cardType), colour(cardColour), value(cardValue)
+Card::Card()
+    : type("number"), colour("Red"), value(0)
 {
+}
+
+//the constructor, which creates a card object using the colour,type and value given. Initializer list assigns each private member variable it's parameter
+Card::Card(const string& colour, const string& type, int value)
+    : type(type), colour(colour), value(value)
+{
+    if (this->type == "Number" || this->type == "NUMBER") {
+        this->type = "number";
+    }
+
 //number cards use a value from 0-9
 //action cards (ie: skip, reverse,draw 2) do not use a numerical value, therefore stored as -1.
-    if (type != "number")
+    if (this->type != "number")
     {
-        value = -1;
+        this->value = -1;
     }
 }
 
